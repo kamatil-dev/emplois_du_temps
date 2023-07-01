@@ -7,7 +7,6 @@
       <template #footer>
         <n-button
           v-if="
-            Emploi?.planning &&
             Emploi.planning.find(
               (planning) =>
                 planning.jour === SéanceActuelle.jour &&
@@ -79,7 +78,12 @@
         <n-form-item path="module" label="Nom du Module">
           <n-select
             v-model:value="SéanceActuelle.module"
-            :options="user?.modules || []"
+            :options="
+              user?.modules.map((module) => ({
+                label: module,
+                value: module,
+              })) || []
+            "
             tag
             @update:value="(label) => AjouterUnModule(label)"
             filterable
@@ -116,7 +120,12 @@
         <n-form-item path="enseignant" label="Nom du Enseignant(e)">
           <n-select
             v-model:value="SéanceActuelle.enseignant"
-            :options="user?.enseignants || []"
+            :options="
+              user?.enseignants.map((enseignant) => ({
+                label: enseignant,
+                value: enseignant,
+              })) || []
+            "
             tag
             @update:value="(label) => AjouterUnEnseignant(label)"
             filterable
@@ -155,7 +164,12 @@
           <template #description>
             <n-select
               v-model:value="Emploi.filière"
-              :options="user?.filières || []"
+              :options="
+                user?.filières.map((filière) => ({
+                  label: filière,
+                  value: filière,
+                })) || []
+              "
               tag
               @update:value="(label) => AjouterUneFilière(label)"
               filterable
@@ -225,7 +239,6 @@
           <div
             class="planning"
             v-if="
-              Emploi?.planning &&
               Emploi.planning.find(
                 (planning) => planning.jour === Jour && planning.heure === Heure
               )
@@ -386,7 +399,7 @@ definePageMeta({
 });
 
 const user = useState("user"),
-  Emploi = reactive({}),
+  Emploi = reactive({ planning: [] }),
   EmploiDateRef = ref(), // Pour cibler le champ en cas d'erreur
   AfficherModal = ref(false),
   SéanceActuelle = ref({
