@@ -153,8 +153,8 @@ const user = useState("user"),
       {
         params: {
           _where: JSON.stringify([
-            ["date.0", ">=", date.value[0]],
-            ["date.1", "<=", date.value[1]],
+            ["date.0", "<=", date.value[0]],
+            ["date.1", ">=", date.value[1]],
           ]),
           _options: JSON.stringify({ per_page: 1000 }),
         },

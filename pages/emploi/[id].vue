@@ -403,13 +403,13 @@ const user = useState("user"),
   { data: Emploi } = await useFetch(
     `https://api.inicontent.com/emplois_du_temps/emploi/${route.params.id}`,
     {
-      transform: async (res) => {
+      transform: (res) => {
         if (
           !res.result ||
           (Array.isArray(res.result) && res.result.length === 0)
         ) {
           message.error("Ce emploi du temps n'existe pas");
-          await navigateTo("/emplois");
+          navigateTo("/emplois");
         }
 
         return res.result;
@@ -461,8 +461,8 @@ const user = useState("user"),
       {
         params: {
           _where: JSON.stringify([
-            ["date.0", ">=", Emploi.date[0]],
-            ["date.1", "<=", Emploi.date[1]],
+            ["date.0", ">=", Emploi.value.date[0]],
+            ["date.1", "<=", Emploi.value.date[1]],
           ]),
           _options: JSON.stringify({ per_page: 1000 }),
         },
@@ -556,6 +556,28 @@ const user = useState("user"),
     if (res.result) message.success(res.message.fr);
     else message.error(res.message.fr);
   };
+
+// await $fetch("https://api.inicontent.com/emplois_du_temps/emploi", {
+//   method: "POST",
+//   body: {
+//     planning: [
+//       {
+//         jour: "Lundi",
+//         heure: "10h00 - 12h00",
+//         enseignant: "Julien demarseemane",
+//         module: "algorithme",
+//         semaines: [1, 12],
+//         types: ["tp"],
+//         charge_horaire: {
+//           tp: 15,
+//         },
+//         salle: "Amphi C",
+//       },
+//     ],
+//     filière: "DAI",
+//     date: [1689375600000, 1693004400000],
+//   },
+// });
 </script>
 
 <style>

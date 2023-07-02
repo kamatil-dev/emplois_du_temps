@@ -116,7 +116,7 @@ const message = useMessage(),
         }),
       },
       transform: (res) => {
-        pageCount.value = res.options.total_pages;
+        totalPages.value = res.options.total_pages;
         return res.result;
       },
     }

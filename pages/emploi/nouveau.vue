@@ -446,8 +446,8 @@ const user = useState("user"),
       {
         params: {
           _where: JSON.stringify([
-            ["date.0", ">=", Emploi?.date[0]],
-            ["date.1", "<=", Emploi?.date[1]],
+            ["date.0", "<=", Emploi.date[0]],
+            ["date.1", ">=", Emploi.date[1]],
           ]),
           _options: JSON.stringify({ per_page: 1000 }),
         },
@@ -529,19 +529,23 @@ const user = useState("user"),
   SauvgarderEmploiLoading = ref(false),
   SauvgarderEmploi = async () => {
     SauvgarderEmploiLoading.value = true;
-    const res = await $fetch(
+    const { data: res } = await useFetch(
       `https://api.inicontent.com/emplois_du_temps/emploi`,
       {
         method: "POST",
-        body: Emploi.value,
+        body: Emploi,
+        transform: (res) => {
+          res.result = res.result[0];
+          return res;
+        },
       }
     );
     SauvgarderEmploiLoading.value = false;
 
-    if (res.result && res.result.id) {
-      message.success(res.message.fr);
-      await navigateTo(`/emploi/${res.result.id}`);
-    } else message.error(res.message.fr);
+    if (res.value.result && res.value.result.id) {
+      message.success(res.value.message.fr);
+      await navigateTo(`/emploi/${res.value.result.id}`);
+    } else message.error(res.value.message.fr);
   };
 </script>
 

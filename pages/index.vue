@@ -16,7 +16,12 @@
             height="40"
           />
         </n-space>
-        <n-form ref="formRefEl" :model="loginData" :rules="rules">
+        <n-form
+          ref="formRefEl"
+          :model="loginData"
+          :rules="rules"
+          @keydown.enter="handleLogin"
+        >
           <n-form-item path="username">
             <n-input
               v-model:value="loginData.username"
